@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Search from './components/Search'
+import Form from './components/Form'
+import Numbers from './components/Numbers'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -29,7 +32,7 @@ const App = () => {
       id: persons.length + 1
     }
 
-    if (persons.findIndex((person) => person.name === newPerson.name) !== -1) {
+    if (persons.findIndex((person) => person.name.toLowerCase() === newPerson.name.toLowerCase()) !== -1) {
       alert(`${newPerson.name} is already added to the phonebook.`)
     } else {
       setPersons(persons.concat(newPerson))
@@ -45,40 +48,19 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <div>debug: {newName} / {newNumber}</div>
-      <label htmlFor='search'>Filter shown with </label>
-      <input id='search' value={search} onChange={handleSearch} />
+      <Search search={search} handleSearch={handleSearch} />
+
       <h2>Add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='name'>Name:</label>
-          <input id='name' value={newName} onChange={handleNewName} />
-          <br />
-          <label htmlFor='name'>Number:</label>
-          <input id='name' value={newNumber} onChange={handleNewNumber} />
-        </div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
+      <Form
+        handleSubmit={handleSubmit}
+        newName={newName}
+        handleNewName={handleNewName}
+        newNumber={newNumber}
+        handleNewNumber={handleNewNumber}
+      />
+
       <h2>Numbers</h2>
-      <ul>
-        {
-          search === "" ?
-            persons.map((person) =>
-              <li key={person.id}>
-                {person.name} {person.number}
-              </li>)
-            :
-            persons
-              .filter((person) => person.name.toLowerCase().includes(search.toLowerCase()))
-              .map((person) =>
-                <li key={person.id}>
-                  {person.name} {person.number}
-                </li>
-              )
-        }
-      </ul>
+      <Numbers search={search} persons={persons} />
     </div>
   )
 }
