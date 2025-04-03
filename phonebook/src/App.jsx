@@ -3,6 +3,7 @@ import axios from 'axios'
 import Search from './components/Search'
 import Form from './components/Form'
 import Numbers from './components/Numbers'
+import personServices from './services/personServices'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,10 +12,10 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => {
-        setPersons(response.data)
+    personServices
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -38,7 +39,11 @@ const App = () => {
     if (persons.findIndex((person) => person.name.toLowerCase() === newPerson.name.toLowerCase()) !== -1) {
       alert(`${newPerson.name} is already added to the phonebook.`)
     } else {
-      setPersons(persons.concat(newPerson))
+      personServices
+        .create(newPerson)
+        .then(addedPerson => {
+          setPersons(persons.concat(addedPerson))
+        })
     }
 
     setNewName('')
