@@ -32,7 +32,7 @@ const App = () => {
 
     const newPerson = {
       name: newName,
-      number: newNumber,
+      number: newNumber
     }
 
     if (persons.findIndex((person) => person.name.toLowerCase() === newPerson.name.toLowerCase()) !== -1) {
@@ -52,6 +52,14 @@ const App = () => {
   const handleSearch = (event) => {
     setSearch(event.target.value)
   }
+
+  const handleDelete = (id) => {
+    personServices
+      .del(id)
+      .then(() => {
+        setPersons(persons.filter((person) => person.id !== id))
+      })
+  }
   return (
     <div>
       <h1>Phonebook</h1>
@@ -67,7 +75,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Numbers search={search} persons={persons} />
+      <Numbers search={search} persons={persons} handleDelete={handleDelete} />
     </div>
   )
 }
