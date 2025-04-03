@@ -5,7 +5,7 @@ const Numbers = ({ search, persons, handleDelete }) => {
         persons.map((person) =>
           <li key={person.id}>
             {person.name} {person.number}
-            <button onClick={() => handleDelete(person.id)}>Delete</button>
+            <button onClick={() => handleDelete(person.id, person.name)}>Delete</button>
           </li>
         )
         :
@@ -14,7 +14,7 @@ const Numbers = ({ search, persons, handleDelete }) => {
           .map((person) =>
             <li key={person.id}>
               {person.name} {person.number}
-              <button onClick={() => handleDelete(person.id)}>Delete</button>
+              <button onClick={() => handleDelete(person.id, person.name)}>Delete</button>
             </li>
           )
 
