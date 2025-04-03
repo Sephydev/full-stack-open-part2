@@ -53,12 +53,14 @@ const App = () => {
     setSearch(event.target.value)
   }
 
-  const handleDelete = (id) => {
-    personServices
-      .del(id)
-      .then(() => {
-        setPersons(persons.filter((person) => person.id !== id))
-      })
+  const handleDelete = (id, name) => {
+    if (confirm(`Delete ${name}?`)) {
+      personServices
+        .del(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id))
+        })
+    }
   }
   return (
     <div>
