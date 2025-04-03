@@ -21,8 +21,13 @@
       "id": "4"
     },
     {
-      "id": "0cfc",
+      "id": 5,
       "name": "Séphirah",
+      "number": "1234"
+    },
+    {
+      "id": 6,
+      "name": "Sephirah",
       "number": "1234"
     }
   ]
