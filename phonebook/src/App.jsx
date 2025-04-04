@@ -36,7 +36,14 @@ const App = () => {
     }
 
     if (persons.findIndex((person) => person.name.toLowerCase() === newPerson.name.toLowerCase()) !== -1) {
-      alert(`${newPerson.name} is already added to the phonebook.`)
+      if (confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+        const personAdded = persons.find((person) => person.name === newPerson.name)
+        personServices
+          .update(newPerson, personAdded.id)
+          .then((returnedPerson) => {
+            setPersons(persons.map(person => person.name === newPerson.name ? returnedPerson : person))
+          })
+      }
     } else {
       personServices
         .create(newPerson)
