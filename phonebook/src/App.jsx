@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Search from './components/Search'
 import Form from './components/Form'
 import Numbers from './components/Numbers'
+import Notification from './components/Notification'
 import personServices from './services/personServices'
 
 const App = () => {
@@ -10,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     personServices
@@ -42,6 +43,10 @@ const App = () => {
           .update(newPerson, personAdded.id)
           .then((returnedPerson) => {
             setPersons(persons.map(person => person.name === newPerson.name ? returnedPerson : person))
+            setSuccessMessage(`Numbed of ${returnedPerson.name} modified`)
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
           })
           .catch(() => {
             alert(`${newPerson.name} is not registered in the server. Deletion of ${newPerson.name}`)
@@ -53,6 +58,11 @@ const App = () => {
         .create(newPerson)
         .then(addedPerson => {
           setPersons(persons.concat(addedPerson))
+          setSuccessMessage(`Added ${addedPerson.name}`)
+
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
     }
 
@@ -80,6 +90,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification successMessage={successMessage} />
       <Search search={search} handleSearch={handleSearch} />
 
       <h2>Add a new</h2>
