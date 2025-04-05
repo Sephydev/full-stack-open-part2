@@ -1,4 +1,4 @@
-const Countries = ({ countries, search }) => {
+const Countries = ({ countries, search, handleShow }) => {
 
   const filteredCountries = countries.filter(country => country.name.common.toLowerCase().includes(search))
 
@@ -12,7 +12,9 @@ const Countries = ({ countries, search }) => {
     return (
       <ul>
         {filteredCountries.map(country =>
-          <li key={country.name.common}>{country.name.common}</li>
+          <li key={country.name.common}>
+            {country.name.common} <button onClick={() => handleShow(country.name.common)}>Show</button>
+          </li>
         )}
       </ul>
     )

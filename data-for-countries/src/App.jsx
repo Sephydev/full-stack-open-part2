@@ -17,6 +17,14 @@ const App = () => {
     setSearch(event.target.value)
   }
 
+  const handleShow = (name) => {
+    axios
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name.toLowerCase()}`)
+      .then(response => {
+        setCountries([response.data])
+      })
+  }
+
   if (!countries) {
     return null
   }
@@ -24,7 +32,7 @@ const App = () => {
   return (
     <>
       Find countries <input value={search} onChange={handleChange} />
-      <Countries countries={countries} search={search} />
+      <Countries countries={countries} search={search} handleShow={handleShow} />
     </>
   )
 }
