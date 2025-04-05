@@ -43,6 +43,10 @@ const App = () => {
           .then((returnedPerson) => {
             setPersons(persons.map(person => person.name === newPerson.name ? returnedPerson : person))
           })
+          .catch(() => {
+            alert(`${newPerson.name} is not registered in the server. Deletion of ${newPerson.name}`)
+            setPersons(persons.filter(person => person.name !== newPerson.name))
+          })
       }
     } else {
       personServices
@@ -66,6 +70,10 @@ const App = () => {
         .del(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id))
+        })
+        .catch(() => {
+          alert(`${name} don't exist on the server. Deletion of ${name}`)
+          setPersons(persons.filter((person) => person.name !== name))
         })
     }
   }
