@@ -1,7 +1,4 @@
-const Countries = ({ countries, search, handleShow }) => {
-
-  const filteredCountries = countries.filter(country => country.name.common.toLowerCase().includes(search))
-
+const Countries = ({ filteredCountries, weather, handleShow }) => {
   if (filteredCountries.length > 10) {
     return (
       <p>Too many matches, specify another filter</p>
@@ -20,7 +17,7 @@ const Countries = ({ countries, search, handleShow }) => {
     )
   }
 
-  if (filteredCountries.length === 1) {
+  if (filteredCountries.length === 1 && weather) {
     const country = filteredCountries[0]
     const languages = Object.values(country.languages)
 
@@ -36,6 +33,10 @@ const Countries = ({ countries, search, handleShow }) => {
           )}
         </ul>
         <img src={country.flags.png} alt={country.flags.alt} />
+        <h2>Weather in {country.capital}</h2>
+        <p>Temperature {weather.main.temp} Celsius</p>
+        <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} />
+        <p>Wind {weather.wind.speed} m/s</p>
       </>
     )
   }
