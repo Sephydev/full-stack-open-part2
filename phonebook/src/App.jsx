@@ -87,6 +87,11 @@ const App = () => {
         .del(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id))
+          setMessage(`${name} deleted successfully`)
+
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
         .catch(() => {
           setPersons(persons.filter((person) => person.name !== name))
