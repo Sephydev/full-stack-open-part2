@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     personServices
@@ -43,14 +44,20 @@ const App = () => {
           .update(newPerson, personAdded.id)
           .then((returnedPerson) => {
             setPersons(persons.map(person => person.name === newPerson.name ? returnedPerson : person))
-            setSuccessMessage(`Numbed of ${returnedPerson.name} modified`)
+            setMessage(`Numbed of ${returnedPerson.name} modified`)
             setTimeout(() => {
-              setSuccessMessage(null)
+              setMessage(null)
             }, 5000)
           })
           .catch(() => {
-            alert(`${newPerson.name} is not registered in the server. Deletion of ${newPerson.name}`)
             setPersons(persons.filter(person => person.name !== newPerson.name))
+            setMessage(`Information of ${newPerson.name} has already been removed from the server`)
+            setIsError(true)
+
+            setTimeout(() => {
+              setMessage(null)
+              setIsError(false)
+            }, 5000)
           })
       }
     } else {
@@ -58,10 +65,10 @@ const App = () => {
         .create(newPerson)
         .then(addedPerson => {
           setPersons(persons.concat(addedPerson))
-          setSuccessMessage(`Added ${addedPerson.name}`)
+          setMessage(`Added ${addedPerson.name}`)
 
           setTimeout(() => {
-            setSuccessMessage(null)
+            setMessage(null)
           }, 5000)
         })
     }
@@ -82,15 +89,21 @@ const App = () => {
           setPersons(persons.filter((person) => person.id !== id))
         })
         .catch(() => {
-          alert(`${name} don't exist on the server. Deletion of ${name}`)
           setPersons(persons.filter((person) => person.name !== name))
+          setMessage(`Information of ${name} has already been removed from the server`)
+          setIsError(true)
+
+          setTimeout(() => {
+            setMessage(null)
+            setIsError(false)
+          }, 5000)
         })
     }
   }
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification successMessage={successMessage} />
+      <Notification message={message} isError={isError} />
       <Search search={search} handleSearch={handleSearch} />
 
       <h2>Add a new</h2>
